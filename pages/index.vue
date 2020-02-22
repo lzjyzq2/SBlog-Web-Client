@@ -1,20 +1,19 @@
 <template>
   <div class="container">
     <div>
-      <logo />
       <h1 class="title">
         SBlogWebClient
       </h1>
       <h2 class="subtitle">
-        S&#39;Blog博客系统的Web客户端
+        S&#x27;Blog博客系统
       </h2>
       <div class="links">
         <a
-          href="https://nuxtjs.org/"
+          href="/user/login"
           target="_blank"
           class="button--green"
         >
-          Documentation
+          开始使用
         </a>
         <a
           href="https://github.com/nuxt/nuxt.js"
@@ -23,18 +22,19 @@
         >
           GitHub
         </a>
+        <nuxt-link :to="{name:'user-id',params:{id:12}}">test</nuxt-link>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import Logo from '~/components/Logo.vue'
-
+/**
+ * 站点主页
+ */
 export default {
   components: {
-    Logo
-  }
+  },
 }
 </script>
 
