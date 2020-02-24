@@ -29,7 +29,9 @@ module.exports = {
   ** Plugins to load before mounting the App
   */
   plugins: [
-    '@/plugins/antd-ui'
+    '@/plugins/antd-ui',
+    '~/plugins/i18n.js',
+    {src:'~/plugins/blog-link.js',ssr:true}
   ],
   /*
   ** Nuxt.js dev-modules
@@ -58,5 +60,8 @@ module.exports = {
   */
   axios:{
 
-  }
+  },
+  router: {
+    middleware: 'i18n'
+  },
 }
