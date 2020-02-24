@@ -9,7 +9,7 @@
       </h2>
       <div class="links">
         <!-- <nuxt-link to="" class="button--green">开始使用</nuxt-link> -->
-        <blog-link to="/login" class="button--green">开始使用</blog-link>
+        <blog-link :to="{name:'lang-login'}" class="button--green">开始使用</blog-link>
         <a
           href="https://github.com/nuxt/nuxt.js"
           target="_blank"

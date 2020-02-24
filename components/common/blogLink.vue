@@ -58,14 +58,23 @@ export default {
   },
   created: function() {
     if (!this.noBlogLink) {
-      if (typeof this.to == 'string') {
+      if (typeof this.to == "string") {
         let path = this.to;
         this.url = this.checkSeparator(path);
       } else {
         this.url = this.to;
         let path = this.url.path;
         if (path != undefined || path != null) {
-          this.url = this.checkSeparator(path);
+          this.url.path = this.checkSeparator(path);
+        }
+        if (this.url.name != undefined || this.url.name != null) {
+          if (this.url.params == null) {
+            this.url.params = {
+              lang: this.$store.state.locale
+            };
+          } else if(this.url.params[lang]==null||this.url.name == undefined){
+            this.url.params[lang] = this.$store.state.locale;
+          }
         }
       }
     }
