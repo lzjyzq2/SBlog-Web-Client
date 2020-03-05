@@ -126,20 +126,18 @@
             />
           </a-col>
           <a-col :span="12">
-            <a-button>Get captcha</a-button>
+            <a-button @click="getCaptcha">Get captcha</a-button>
           </a-col>
         </a-row>
       </a-form-item>
       <a-form-item v-bind="tailFormItemLayout">
         <a-checkbox v-decorator="['agreement', { valuePropName: 'checked' }]">
-          I have read the <a href>agreement</a>
+          I have read the
+          <a href>agreement</a>
         </a-checkbox>
-        <nuxt-link to="/login" class="register-form-login">Login Now!</nuxt-link>
+        <blog-link to="/login" class="register-form-login">Login Now!</blog-link>
         <a-button type="primary" html-type="submit" class="register-form-button">Register</a-button>
       </a-form-item>
-      <!-- <a-form-item v-bind="tailFormItemLayout">
-        
-      </a-form-item>-->
     </a-form>
   </a-row>
 </template>
@@ -183,7 +181,13 @@ export default {
       e.preventDefault();
       this.form.validateFieldsAndScroll((err, values) => {
         if (!err) {
-          console.log("Received values of form: ", values);
+          this.$sblogclient.register(
+            values.username,
+            values.nickname,
+            values.password,
+            values.email,
+            values.captcha
+          );
         }
       });
     },
@@ -206,16 +210,31 @@ export default {
       }
       callback();
     },
-    handleWebsiteChange(value) {
-      let autoCompleteResult;
-      if (!value) {
-        autoCompleteResult = [];
-      } else {
-        autoCompleteResult = [".com", ".org", ".net"].map(
-          domain => `${value}${domain}`
-        );
-      }
-      this.autoCompleteResult = autoCompleteResult;
+    // handleWebsiteChange(value) {
+    //   let autoCompleteResult;
+    //   if (!value) {
+    //     autoCompleteResult = [];
+    //   } else {
+    //     autoCompleteResult = [".com", ".org", ".net"].map(
+    //       domain => `${value}${domain}`
+    //     );
+    //   }
+    //   this.autoCompleteResult = autoCompleteResult;
+    // },
+    getCaptcha: function(e) {
+      this.form.validateFields(['username','email'], (err, values) => {
+        if (!err) {
+          this.$sblogclient.getRegCaptcha(values.username,values.email).then(res=>{
+            if(res.data.code==14){
+              console.log("邮件发送成功");
+            }else{
+
+            }
+          });
+        }
+      });
+      //console.log(username + email);
+      //this.$sblogclient.getRegCaptcha()
     }
   }
 };
@@ -261,7 +280,7 @@ body {
       sans-serif;
     display: block;
   }
-  .register-form-login{
+  .register-form-login {
     float: right;
   }
   .register-form-button {

@@ -1,17 +1,12 @@
 <template>
   <a-row type="flex" justify="space-around" align="middle" class="form-container">
-    <a-form
-      id="components-form-demo-normal-login"
-      :form="form"
-      class="login-form"
-      @submit="handleSubmit"
-    >
+    <a-form id="normal-login" :form="form" class="login-form" @submit="handleSubmit">
       <p>{{$t('login.title')}}</p>
       <a-form-item>
         <a-input
           v-decorator="[
-          'userName',
-          { rules: [{ required: true, message: 'Please input your username!' }] },
+          'username',
+          { rules: [{ required: true, message: 'Please input your Username!' }] },
         ]"
           placeholder="用户名"
         >
@@ -42,7 +37,7 @@
         >Remember me</a-checkbox>
         <a class="login-form-forgot" href>Forgot password</a>
         <a-button type="primary" html-type="submit" class="login-form-button">Log in</a-button>Or
-        <nuxt-link to="/register">register now!</nuxt-link>
+        <blog-link to="/register">register now!</blog-link>
       </a-form-item>
     </a-form>
   </a-row>
@@ -53,12 +48,15 @@ export default {
   beforeCreate() {
     this.form = this.$form.createForm(this, { name: "normal_login" });
   },
+  mounted: function() {},
   methods: {
     handleSubmit(e) {
       e.preventDefault();
       this.form.validateFields((err, values) => {
         if (!err) {
-          console.log("Received values of form: ", values);
+          this.$sblogclient.login(values.username,values.password);
+        } else {
+          // 处理表单验证错误
         }
       });
     }
@@ -82,7 +80,7 @@ body {
 .form-container {
   height: 100%;
 }
-#components-form-demo-normal-login&.login-form {
+#normal-login&.login-form {
   max-width: 400px;
   margin: 0 auto;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
@@ -99,11 +97,12 @@ body {
     color: #35495e;
     letter-spacing: 1px;
   }
-}
-#components-form-demo-normal-login .login-form-forgot {
-  float: right;
-}
-#components-form-demo-normal-login .login-form-button {
-  width: 100%;
+
+  .login-form-forgot {
+    float: right;
+  }
+  .login-form-button {
+    width: 100%;
+  }
 }
 </style>

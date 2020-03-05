@@ -1,5 +1,5 @@
 <template>
-    <a>{{$route.params.id}}</a>
+    
 </template>
 <script>
 /**
@@ -7,7 +7,7 @@
  */
 export default {
     validate ({ params }) {
-        return /^[0-9]+$/.test(params.id);
+        return /^[0-9]+$/.test(params.userName);
     },
     data:function(){
         return{
