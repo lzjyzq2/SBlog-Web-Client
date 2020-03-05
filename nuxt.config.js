@@ -31,7 +31,8 @@ module.exports = {
   plugins: [
     '@/plugins/antd-ui',
     '~/plugins/i18n.js',
-    {src:'~/plugins/blog-link.js',ssr:true}
+    {src:'~/plugins/blog-link.js',ssr:true},
+    {src:'~/plugins/sblogclient.js',ssr:true}
   ],
   /*
   ** Nuxt.js dev-modules
@@ -43,6 +44,7 @@ module.exports = {
   */
   modules: [
     '@nuxtjs/axios',
+    'nuxt-vuex-localstorage',
   ],
   /*
   ** Build configuration
