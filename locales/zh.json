@@ -1,6 +1,6 @@
 {
     "index":{
-
+        
     },
     "register":{
         
@@ -9,6 +9,9 @@
         "title":"欢迎使用S‘Blog"
     },
     "userpublic":{
-
+        "MenuItemTimeline":"时间线",
+        "MenuItemMessages":"通知",
+        "MenuItemHistory":"历史查看",
+        "MenuItemCollection":"收藏"
     }
 }

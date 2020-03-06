@@ -31,8 +31,7 @@ module.exports = {
   plugins: [
     '@/plugins/antd-ui',
     '~/plugins/i18n.js',
-    {src:'~/plugins/blog-link.js',ssr:true},
-    {src:'~/plugins/sblogclient.js',ssr:true}
+    '~/plugins/sblogclient.js'
   ],
   /*
   ** Nuxt.js dev-modules
@@ -64,6 +63,6 @@ module.exports = {
 
   },
   router: {
-    middleware: 'i18n'
+    
   },
 }

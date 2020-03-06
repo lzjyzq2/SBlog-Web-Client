@@ -1,6 +1,6 @@
 {
     "index":{
-
+        
     },
     "register":{
         
@@ -9,6 +9,9 @@
         "title":"Welcome to S'Blog"
     },
     "userpublic":{
-
+        "MenuItemTimeline":"timeline",
+        "MenuItemMessages":"messages",
+        "MenuItemHistory":"history",
+        "MenuItemCollection":"collection"
     }
 }
