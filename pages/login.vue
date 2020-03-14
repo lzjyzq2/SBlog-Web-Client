@@ -64,21 +64,12 @@ export default {
 };
 </script>
 
-<style lang="less">
-html {
-  height: 100%;
-}
-body {
-  height: 100%;
-}
-#__nuxt {
-  height: 100%;
-}
-#__layout {
-  height: 100%;
-}
+<style lang="less" scoped>
 .form-container {
-  height: 100%;
+  margin: 0 auto;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
 }
 #normal-login&.login-form {
   max-width: 400px;

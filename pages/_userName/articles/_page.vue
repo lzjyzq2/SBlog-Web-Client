@@ -1,21 +1,73 @@
 <template>
-    
+    <div class="main-content">
+    <!-- UserHome -->
+    <div class="list-title">最后更新</div>
+    <div>
+      <article-list-item
+        class="item-line"
+        v-for="n in 5"
+        :key="n"
+        :url="articleList[0].url"
+        :title="articleList[0].title"
+        :content="articleList[0].content"
+        :date="articleList[0].date"
+        :tag="articleList[0].tag"
+      />
+    </div>
+  </div>
 </template>
 <script>
 /**
- * 用户主页
+ * 用户文章列表页
  */
-export default {
-    validate ({ params }) {
-        return /^[0-9]+$/.test(params.userName);
-    },
-    data:function(){
-        return{
+import ArticleListItem from "~/components/common/ArticleListItem";
+import BookListItem from "~/components/common/BookListItem";
 
+export default {
+  data: function() {
+    return {
+      articleList: [
+        {
+          url: "/articles/0",
+          title:
+            "Title，One Tilte,The title is very important，The title is very ...... ",
+          content:
+            "Text, the body is also very important, otherwise who knows what you want to do.Text, the body is also very important, otherwise who knows what you want to do......",
+          date: "2020-03-11",
+          tag: ["sblog", "text", "title"]
         }
-    }
-}
+      ]
+    };
+  },
+  components: {
+    ArticleListItem
+  }
+};
 </script>
 <style lang="less">
-
+.main-content {
+  border: 1px solid #e8e8e8;
+  box-shadow: 0 5px 5px 0 #e8e8e8;
+  border-radius: 3px;
+  .list-title {
+    height: 50px;
+    line-height: 50px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #676767;
+    text-align: right;
+    padding: 0 15px;
+    border-bottom: 1px solid #eaeaea;
+    border-top: 1px solid #eaeaea;
+    &:first-child {
+      border-top: none;
+    }
+  }
+  .item-line {
+    border-bottom: 1px solid #e8e8e8;
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+}
 </style>

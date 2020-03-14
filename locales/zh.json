@@ -13,5 +13,13 @@
         "MenuItemMessages":"通知",
         "MenuItemHistory":"历史查看",
         "MenuItemCollection":"收藏"
+    },
+    "components":{
+        "userpanel":{
+            "home":"首页",
+            "articles":"文章",
+            "books":"文集",
+            "links":"链接"
+        }
     }
 }
