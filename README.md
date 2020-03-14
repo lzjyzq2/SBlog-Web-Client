@@ -5,12 +5,12 @@
 
 ## 开发指南
 ---
-> 推荐使用`Visual Studio Code`进行项目开发，建议安装`Vue Dev Tool`Chrome插件
+> 推荐使用`Visual Studio Code`进行项目开发，建议安装 `Vue Dev Tool` Chrome插件
 1. 安装 `NodeJs`
     > 使用`npm install`安装依赖
 2. 运行 `S'Blog` Server端
 3. 使用 `Nginx` 反向代理
-    - 在[nginx]/conf/nginx.conf中写入如下配置
+    - 在[nginx]/conf/nginx.conf中写入如下配置(仅为简单示意)
     ```
     ……
     upstream restfulserver{
