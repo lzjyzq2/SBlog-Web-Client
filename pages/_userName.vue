@@ -21,23 +21,20 @@
       </a-row>
     </a-col>
     <a-col>
-      <a-row class="contentbox" :gutter="24">
-        <a-col :md="6" :xs="0">
+      <a-row class="contentbox" type="flex" :gutter="24">
+        <a-col :md="{span:6,order:1}" :xs="{span:24,order:2}">
           <!-- 左侧用户信息与用户站点导航菜单 -->
           <!-- a-col xs下使用push替换路由与菜单位置  -->
           <user-panel />
           <user-home-nav style="margin-top:20px" />
           <tag-panel :tags="tags" style="margin-top:20px"/>
         </a-col>
-        <a-col :xs="24" :md="18">
+        <a-col :xs="{span:24,order:1}" :md="{span:18,order:2}">
           <!-- 用户站点内，子路由 -->
           <nuxt-child />
         </a-col>
       </a-row>
     </a-col>
-    <!-- <a-col :span="24">
-      <blog-footer/>
-    </a-col> -->
   </a-row>
 </template>
 <script>
@@ -47,7 +44,6 @@
 import UserHomeNav from "~/components/UserHomeNav";
 import UserPanel from "~/components/UserPanel";
 import TagPanel from "~/components/TagPanel";
-import BlogFooter from "~/components/BlogFooter";
 
 export default {
   layout:'blog',
@@ -88,8 +84,7 @@ export default {
   components: {
     UserHomeNav,
     UserPanel,
-    TagPanel,
-    BlogFooter
+    TagPanel
   }
 };
 </script>
