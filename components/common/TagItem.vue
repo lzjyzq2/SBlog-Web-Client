@@ -1,8 +1,8 @@
 <template>
-  <div class="tag-item">
+  <nuxt-link class="tag-item" :to="{name:'userName-tag-tag-page',params:{tag:tag,page:1}}">
     {{tag}}
     <div class="num">{{num}}</div>
-  </div>
+  </nuxt-link>
 </template>
 
 <script>
@@ -24,6 +24,7 @@ export default {
   padding-left: 5px;
   margin: 4px;
   display: inline-block;
+  color: #505050;
   &:last-child {
     margin-right: 0px;
   }
