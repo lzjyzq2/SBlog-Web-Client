@@ -1,7 +1,7 @@
 <template>
-    <div class="main-content">
+  <div class="main-content">
     <!-- UserHome -->
-    <div class="list-title">最后更新</div>
+    <div class="list-title">所有文章</div>
     <div>
       <article-list-item
         class="item-line"
@@ -14,6 +14,7 @@
         :tag="articleList[0].tag"
       />
     </div>
+    <a-pagination hideOnSinglePage :defaultCurrent="parseInt($route.params.page)" :total="pagecount" @change="onChange" class="pagination" />
   </div>
 </template>
 <script>
@@ -21,7 +22,6 @@
  * 用户文章列表页
  */
 import ArticleListItem from "~/components/common/ArticleListItem";
-import BookListItem from "~/components/common/BookListItem";
 
 export default {
   data: function() {
@@ -36,11 +36,17 @@ export default {
           date: "2020-03-11",
           tag: ["sblog", "text", "title"]
         }
-      ]
+      ],
+      pagecount: 20
     };
   },
   components: {
     ArticleListItem
+  },
+  methods: {
+    onChange(pageNumber) {
+      
+    }
   }
 };
 </script>
@@ -68,6 +74,10 @@ export default {
     &:last-child {
       border-bottom: none;
     }
+  }
+  .pagination{
+    margin: 20px auto;
+    text-align: center;
   }
 }
 </style>
