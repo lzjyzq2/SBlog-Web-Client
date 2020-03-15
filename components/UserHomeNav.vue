@@ -6,17 +6,17 @@
       </a-row>
       <a-row class="item" :class="$route.name=='userName-articles-page'?'active':''">
         <nuxt-link
-          :to="{name:'userName-articles-page',params:{page:0}}"
+          :to="{name:'userName-articles-page',params:{page:1}}"
         >{{$t('components.userpanel.articles')}}</nuxt-link>
       </a-row>
       <a-row class="item" :class="$route.name=='userName-books-page'?'active':''">
         <nuxt-link
-          :to="{name:'userName-books-page',params:{page:0}}"
+          :to="{name:'userName-books-page',params:{page:1}}"
         >{{$t('components.userpanel.books')}}</nuxt-link>
       </a-row>
       <a-row class="item" :class="$route.name=='userName-links-page'?'active':''">
         <nuxt-link
-          :to="{name:'userName-links-page',params:{page:0}}"
+          :to="{name:'userName-links-page',params:{page:1}}"
         >{{$t('components.userpanel.links')}}</nuxt-link>
       </a-row>
     </a-col>
