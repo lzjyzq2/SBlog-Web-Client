@@ -2,21 +2,21 @@
   <a-row>
     <a-col class="userhomenav">
       <a-row class="item" :class="$route.name=='userName'?'active':''">
-        <nuxt-link :to="{name:'userName'}">{{$t('components.userpanel.home')}}</nuxt-link>
+        <nuxt-link :to="{name:'userName',params:{userName:this.username}}">{{$t('components.userpanel.home')}}</nuxt-link>
       </a-row>
       <a-row class="item" :class="$route.name=='userName-articles-page'?'active':''">
         <nuxt-link
-          :to="{name:'userName-articles-page',params:{page:1}}"
+          :to="{name:'userName-articles-page',params:{userName:this.username,page:1}}"
         >{{$t('components.userpanel.articles')}}</nuxt-link>
       </a-row>
       <a-row class="item" :class="$route.name=='userName-books-page'?'active':''">
         <nuxt-link
-          :to="{name:'userName-books-page',params:{page:1}}"
+          :to="{name:'userName-books-page',params:{userName:this.username,page:1}}"
         >{{$t('components.userpanel.books')}}</nuxt-link>
       </a-row>
       <a-row class="item" :class="$route.name=='userName-links-page'?'active':''">
         <nuxt-link
-          :to="{name:'userName-links-page',params:{page:1}}"
+          :to="{name:'userName-links-page',params:{userName:this.username,page:1}}"
         >{{$t('components.userpanel.links')}}</nuxt-link>
       </a-row>
     </a-col>
@@ -24,13 +24,23 @@
 </template>
 <script>
 export default {
-  data: function() {
-    return {};
+  data:function(){
+    return{
+      username:''
+    }
   },
   props: {
     current: {
       type: String,
       default: "home"
+    },
+    userName:String
+  },
+  created:function(){
+    if(this.userName===undefined || this.userName==null){
+      this.username = this.$route.params.userName;
+    }else{
+      this.username = this.userName;
     }
   }
 };

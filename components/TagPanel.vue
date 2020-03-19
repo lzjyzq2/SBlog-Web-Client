@@ -1,17 +1,30 @@
 <template>
   <div class="tag-panel">
-    <tag-item v-for="(tag,index) in tags" :key="tag.tag+index" :tag="tag.tag" :num="tag.num"/>
+    <tag-item v-for="(tag,index) in tags" :key="tag.tag+index" :tag="tag.tag" :num="tag.num" :user-name="username"/>
   </div>
 </template>
 
 <script>
 import TagItem from "~/components/common/TagItem";
 export default {
+  data:function(){
+    return{
+      username:''
+    }
+  },
   components: {
     TagItem
   },
   props: {
-    tags: Array
+    tags: Array,
+    userName:String
+  },
+  created:function(){
+    if(this.userName===undefined || this.userName==null||this.userName==''){
+      this.username = this.$route.params.userName;
+    }else{
+      this.username = this.userName;
+    }
   }
 };
 </script>

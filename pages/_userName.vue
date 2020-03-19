@@ -24,7 +24,6 @@
       <a-row class="contentbox" type="flex" :gutter="24">
         <a-col :md="{span:6,order:1}" :xs="{span:24,order:2}">
           <!-- 左侧用户信息与用户站点导航菜单 -->
-          <!-- a-col xs下使用push替换路由与菜单位置  -->
           <user-panel />
           <user-home-nav style="margin-top:20px" />
           <tag-panel :tags="tags" style="margin-top:20px"/>

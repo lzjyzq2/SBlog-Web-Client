@@ -1,5 +1,5 @@
 <template>
-  <nuxt-link class="tag-item" :to="{name:'userName-tag-tag-page',params:{tag:tag,page:1}}">
+  <nuxt-link class="tag-item" :to="{name:'userName-tag-tag-page',params:{userName:this.userName,tag:tag,page:1}}">
     {{tag}}
     <div class="num">{{num}}</div>
   </nuxt-link>
@@ -9,7 +9,13 @@
 export default {
   props: {
     tag: String,
-    num: Number
+    num: Number,
+    userName:String
+  },
+  created:function(){
+    if(this.userName===undefined || this.userName==null||this.userName==''){
+      this.userName = this.$route.params.userName;
+    }
   }
 };
 </script>

@@ -44,6 +44,7 @@ module.exports = {
   modules: [
     '@nuxtjs/axios',
     'nuxt-vuex-localstorage',
+    '@nuxtjs/markdownit'
   ],
   /*
   ** Build configuration
@@ -65,4 +66,18 @@ module.exports = {
   router: {
     
   },
+  markdownit: {
+    preset: 'default',
+    linkify: true,
+    breaks: true,
+    injected: true,
+    use:[
+      'markdown-it-div',
+      'markdown-it-attrs',
+      'markdown-it-emoji',
+      'markdown-it-container',
+      'markdown-it-task-lists',
+      'markdown-it-highlightjs'
+    ]
+  }
 }
