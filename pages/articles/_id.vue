@@ -26,20 +26,53 @@
           <!-- 左侧用户信息与用户站点导航菜单 -->
           <user-panel />
           <user-home-nav :user-name="userName" style="margin-top:20px" />
-          <tag-panel :user-name="userName" :tags="tags" style="margin-top:20px" />
+          <tag-panel :user-name="userName" :tags="usertags" style="margin-top:20px" />
         </a-col>
         <a-col :xs="{span:24,order:1}" :md="{span:18,order:2}">
           <!-- 文章浏览 -->
           <div class="main-box">
+            <!-- 公式使用的样式表 -->
+            <link
+              rel="stylesheet"
+              href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.5.1/katex.min.css"
+            />
             <div class="postcontent-box">
-              <p class="title">Title Title Title Title Title Title Title</p>
+              <div class="title-border">
+                <p class="title">Title Title Title Title Title Title Title</p>
+                <author-follow-panel
+                  style="margin:10px 10px"
+                  :username="'lzjyzq2'"
+                  :sign="'Day Day Up!Good Good Study!'"
+                />
+              </div>
+              <div class="post-content" v-html="posthtml"></div>
+              <div>
+                <a-icon type="tags" class="icon" />
+                <span class="tag" v-for="item in tags" :key="item">{{item}}</span>
+              </div>
+              <div class="post-action">
+                <a-button shape="circle" icon="like" :size="'large'" style="margin-right:10px" />
+                <a-button shape="circle" icon="star" :size="'large'" />
+                <a-button shape="circle" icon="more" :size="'large'" style="float:right" />
+              </div>
               <author-follow-panel
                 style="margin:10px 10px"
                 :username="'lzjyzq2'"
                 :sign="'Day Day Up!Good Good Study!'"
               />
-              <div class="post-content" v-html="posthtml"></div>
+              <div class="post-nav">
+                <nuxt-link class="nav-prev" :to="{name:'articles-id',params:{id:prevId}}">
+                  <a-icon type="arrow-left" class="nav-icon" />
+                  {{prevTitle}}
+                </nuxt-link>
+                <nuxt-link class="nav-next" :to="{name:'articles-id',params:{id:nextId}}">
+                  {{nextTitle}}
+                  <a-icon type="arrow-right" class="nav-icon" />
+                </nuxt-link>
+              </div>
             </div>
+            
+              <blog-comment style="margin-top:20px" />
             <div class="side-box"></div>
           </div>
         </a-col>
@@ -56,8 +89,10 @@ import UserPanel from "~/components/UserPanel";
 import TagPanel from "~/components/TagPanel";
 import AuthorFollowPanel from "~/components/common/AuthorFollowPanel";
 import mdtest from "~/assets/README.md";
+import BlogComment from '~/components/BlogComment';
+
 import markdowncss from "~/assets/markdown.less";
-import hljs from "~/assets/highlightjs.less"
+import hljs from "~/assets/highlightjs.less";
 export default {
   layout: "blog",
   validate({ params }) {
@@ -67,7 +102,7 @@ export default {
   data: function() {
     return {
       current: [],
-      tags: [
+      usertags: [
         {
           tag: "Test",
           num: 10
@@ -97,15 +132,21 @@ export default {
           num: 10
         }
       ],
+      tags: ["markdown", "test"],
       posthtml: mdtest,
-      userName: "lzjyzq2"
+      userName: "lzjyzq2",
+      nextId: 0,
+      nextTitle: "下一篇文章",
+      prevId: 0,
+      prevTitle: "上一篇文章"
     };
   },
   components: {
     UserHomeNav,
     UserPanel,
     TagPanel,
-    AuthorFollowPanel
+    AuthorFollowPanel,
+    BlogComment
   }
 };
 </script>
@@ -132,12 +173,63 @@ export default {
     max-width: 1200px;
   }
 
-  .title {
-    height: 40px;
-    line-height: 40px;
-    font-size: 27px;
-    font-weight: bold;
-    margin: 10px;
+  .title-border {
+    border-bottom: 1px solid #e8e8e8;
+    .title {
+      height: 40px;
+      line-height: 40px;
+      font-size: 27px;
+      font-weight: bold;
+      margin: 10px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+  .post-action {
+    padding: 10px 0px;
+    margin-left: 10px;
+    margin-right: 10px;
+    border-top: 1px solid #e8e8e8;
+    border-bottom: 1px solid #e8e8e8;
+  }
+  .post-nav {
+    padding: 10px 10px;
+    display: flex;
+    border-top: 1px solid #e8e8e8;
+    height: 48px;
+    a {
+      display: block;
+      color: #505050;
+      font-size: 18px;
+      &:visited {
+        color: #505050;
+      }
+      &:hover {
+        color: #1890ff;
+      }
+    }
+    .nav-prev {
+      flex: 1;
+      text-align: left;
+      .nav-icon {
+        margin-right: 5px;
+      }
+    }
+    .nav-next {
+      flex: 1;
+      text-align: right;
+      .nav-icon {
+        margin-left: 5px;
+      }
+    }
+  }
+  .icon,
+  .tag {
+    margin-right: 5px;
+  }
+  .icon {
+    margin-left: 10px;
   }
   @media screen and (max-width: 576px) {
     .main-box {
