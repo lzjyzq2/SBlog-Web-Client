@@ -77,7 +77,10 @@ module.exports = {
       'markdown-it-emoji',
       'markdown-it-container',
       'markdown-it-task-lists',
-      'markdown-it-highlightjs'
+      'markdown-it-highlightjs',
+      'markdown-it-katex',
+      'markdown-it-sub',
+      'markdown-it-sup'
     ]
   }
 }
