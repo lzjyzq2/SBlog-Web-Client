@@ -23,6 +23,5 @@ export default {
     color: white;
     text-align: center;
     font-size: 16px;
-    margin-top:-59px;
 }
 </style>
