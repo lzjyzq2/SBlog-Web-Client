@@ -1,12 +1,12 @@
 <template>
-  <a-row class="layout-container">
-    <a-col :span="24" class="wapper">
+  <a-layout class="layout-container">
+    <a-layout-content class="main">
       <nuxt />
-    </a-col>
-    <a-col :span="24">
+    </a-layout-content>
+    <a-layout-footer class="footer">
       <blog-footer />
-    </a-col>
-  </a-row>
+    </a-layout-footer>
+  </a-layout>
 </template>
 <script>
 import BlogFooter from "~/components/BlogFooter";
@@ -41,17 +41,16 @@ body {
   box-sizing: border-box;
   margin: 0;
 }
-#__nuxt,#__layout{
-  min-height: 100vh;
-  width: 100%;
-}
 .layout-container {
   min-height: 100vh;
   width: 100%;
-}
-.wapper {
-  min-height: 100vh;
-  width: 100%;
-  padding-bottom: 59px;
+  background: white;
+  .main{
+    flex: 1;
+    display: flex;
+  }
+  .footer{
+    padding: 0px;
+  }
 }
 </style>
