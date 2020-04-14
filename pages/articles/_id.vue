@@ -1,27 +1,23 @@
 <template>
-  <a-row class="container" type="flex" justify="center">
-    <a-col :span="24">
-      <a-row class="blog-menu-box">
-        <a-col class="blog-menu-col">
-          <a-menu class="blog-menu" v-model="current" mode="horizontal">
-            <a-menu-item key="timeline">
-              <nuxt-link :to="{name:'timeline'}">{{$t('userpublic.MenuItemTimeline')}}</nuxt-link>
-            </a-menu-item>
-            <a-menu-item key="messages">
-              <nuxt-link :to="{name:'messages'}">{{$t('userpublic.MenuItemMessages')}}</nuxt-link>
-            </a-menu-item>
-            <a-menu-item key="history">
-              <nuxt-link :to="{name:'history'}">{{$t('userpublic.MenuItemHistory')}}</nuxt-link>
-            </a-menu-item>
-            <a-menu-item key="collection">
-              <nuxt-link :to="{name:'collection'}">{{$t('userpublic.MenuItemCollection')}}</nuxt-link>
-            </a-menu-item>
-          </a-menu>
-        </a-col>
-      </a-row>
-    </a-col>
-    <a-col>
-      <a-row class="contentbox" type="flex" :gutter="24">
+  <div class="container">
+    <div class="blog-menu-box">
+      <a-menu class="blog-menu" v-model="current" mode="horizontal">
+        <a-menu-item key="timeline">
+          <nuxt-link :to="{name:'timeline'}">{{$t('userpublic.MenuItemTimeline')}}</nuxt-link>
+        </a-menu-item>
+        <a-menu-item key="messages">
+          <nuxt-link :to="{name:'messages'}">{{$t('userpublic.MenuItemMessages')}}</nuxt-link>
+        </a-menu-item>
+        <a-menu-item key="history">
+          <nuxt-link :to="{name:'history'}">{{$t('userpublic.MenuItemHistory')}}</nuxt-link>
+        </a-menu-item>
+        <a-menu-item key="collection">
+          <nuxt-link :to="{name:'collection'}">{{$t('userpublic.MenuItemCollection')}}</nuxt-link>
+        </a-menu-item>
+      </a-menu>
+    </div>
+    <div class="main">
+      <a-row class="contentbox">
         <a-col :md="{span:6,order:1}" :xs="{span:24,order:2}">
           <!-- 左侧用户信息与用户站点导航菜单 -->
           <user-panel />
@@ -71,14 +67,14 @@
                 </nuxt-link>
               </div>
             </div>
-            
-              <blog-comment style="margin-top:20px" />
+
+            <blog-comment style="margin-top:20px" />
             <div class="side-box"></div>
           </div>
         </a-col>
       </a-row>
-    </a-col>
-  </a-row>
+    </div>
+  </div>
 </template>
 <script>
 /**
@@ -89,10 +85,10 @@ import UserPanel from "~/components/UserPanel";
 import TagPanel from "~/components/TagPanel";
 import AuthorFollowPanel from "~/components/common/AuthorFollowPanel";
 import mdtest from "~/assets/README.md";
-import BlogComment from '~/components/BlogComment';
+import BlogComment from "~/components/BlogComment";
 
-import markdowncss from "~/assets/markdown.less";
-import hljs from "~/assets/highlightjs.less";
+import markdowncss from "~/assets/css/markdown.less";
+import hljs from "~/assets/css/highlightjs.less";
 export default {
   layout: "blog",
   validate({ params }) {
@@ -156,16 +152,14 @@ export default {
   .blog-menu-box {
     border-bottom: 1px solid #e8e8e8;
     box-shadow: 0 5px 5px 0 #e8e8e8;
-    .blog-menu-col {
-      max-width: 1200px;
-      margin: 0 auto;
       .blog-menu {
+        max-width: 1200px;
+        margin: 0 auto;
         border-bottom: none;
         font-size: 16px;
         height: 50px;
         line-height: 50px;
       }
-    }
   }
 
   .contentbox {
@@ -173,6 +167,10 @@ export default {
     max-width: 1200px;
   }
 
+  .main{
+    display: flex;
+    justify-content: center;
+  }
   .title-border {
     border-bottom: 1px solid #e8e8e8;
     .title {
@@ -261,11 +259,6 @@ export default {
       position: absolute;
       right: 0px;
       top: 0px;
-    }
-  }
-  @media screen and (min-width: 1200px) {
-    .contentbox {
-      width: 1200px;
     }
   }
 }
