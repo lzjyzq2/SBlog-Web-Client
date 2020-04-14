@@ -5,7 +5,7 @@
     <div>
       <article-list-item
         class="item-line"
-        v-for="n in 5"
+        v-for="n in 10"
         :key="n"
         :url="articleList[0].url"
         :title="articleList[0].title"
