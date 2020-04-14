@@ -1,8 +1,6 @@
 <template>
-  <a-row class="container" type="flex" justify="center">
-    <a-col :span="24">
-      <a-row class="blog-menu-box">
-        <a-col class="blog-menu-col">
+  <div class="container">
+      <div class="blog-menu-box">
           <a-menu class="blog-menu" v-model="current" mode="horizontal">
             <a-menu-item key="timeline">
               <nuxt-link :to="{name:'timeline'}">{{$t('userpublic.MenuItemTimeline')}}</nuxt-link>
@@ -17,10 +15,8 @@
               <nuxt-link :to="{name:'collection'}">{{$t('userpublic.MenuItemCollection')}}</nuxt-link>
             </a-menu-item>
           </a-menu>
-        </a-col>
-      </a-row>
-    </a-col>
-    <a-col>
+      </div>
+    <div class="main">
       <a-row class="contentbox" type="flex" :gutter="24">
         <a-col :md="{span:6,order:1}" :xs="{span:24,order:2}">
           <!-- 左侧用户信息与用户站点导航菜单 -->
@@ -33,8 +29,8 @@
           <nuxt-child />
         </a-col>
       </a-row>
-    </a-col>
-  </a-row>
+    </div>
+  </div>
 </template>
 <script>
 /**
@@ -90,6 +86,7 @@ export default {
 <style lang="less" scoped>
 .container {
   margin: 0 auto;
+  width: 100%;
   .blog-menu-box {
     border-bottom: 1px solid #e8e8e8;
     box-shadow: 0 5px 5px 0 #e8e8e8;
@@ -104,7 +101,10 @@ export default {
       }
     }
   }
-
+  .main{
+    display: flex;
+    justify-content: center;
+  }
   .contentbox {
     margin: 20px 0px;
     max-width: 1200px;
