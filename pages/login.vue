@@ -54,7 +54,14 @@ export default {
       e.preventDefault();
       this.form.validateFields((err, values) => {
         if (!err) {
-          this.$sblogclient.login(values.username,values.password);
+          this.$sblogclient.login(values.username,values.password).then(res=>{
+            if(res.data.code==20){
+              this.$message.success('登录成功', 2.5)
+              this.$router.push({name:'userName',params:{"userName":res.data.data.uname}})
+            }else{
+              this.$message.info('登录失败', 2.5)
+            }
+          });
         } else {
           // 处理表单验证错误
         }
