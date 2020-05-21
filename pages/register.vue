@@ -185,9 +185,15 @@ export default {
             values.username,
             values.nickname,
             values.password,
+            values.confirm,
             values.email,
             values.captcha
-          );
+          ).then((res) => {
+            if (res.data.code == 10) {
+                this.$router.push({name:'login'})
+            }
+            return res;
+        });
         }
       });
     },
@@ -226,15 +232,13 @@ export default {
         if (!err) {
           this.$sblogclient.getRegCaptcha(values.username,values.email).then(res=>{
             if(res.data.code==14){
-              console.log("邮件发送成功");
+              this.$message.info('验证码发送成功', 2.5);
             }else{
-
+              this.$message.info('验证码发送失败，稍后再试', 2.5);
             }
           });
         }
       });
-      //console.log(username + email);
-      //this.$sblogclient.getRegCaptcha()
     }
   }
 };

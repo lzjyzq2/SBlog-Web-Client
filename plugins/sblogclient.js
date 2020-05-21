@@ -4,8 +4,8 @@ export default function (context, inject) {
 
     // Create a custom axios instance
     const sblogclient = context.$axios.create();
-    sblogclient.defaults.baseURL = protocol + "://" + host;
-
+    sblogclient.defaults.baseURL = protocol + "//" + host+"/";
+    
     sblogclient.interceptors.request.use(res => {
         if(process.server){
             
@@ -36,17 +36,12 @@ export default function (context, inject) {
     sblogclient.register = (username, nickname, password, conpassword, email, captcha) => {
         return sblogclient.put('api/register', {
             username: username,
-            nick: nickname,
+            nickname: nickname,
             password: password,
-            conpassword,
-            email: email,
-            captcha
-        }).then((res) => {
-            if (res.data.code == 10) {
-                context.redirect(loginPageUrl);
-            }
-            return res;
-        })
+            conpassword:conpassword,
+            email:email,
+            captcha:captcha
+        });
     }
     sblogclient.getRegCaptcha = (username, email) => {
         return sblogclient.get('api/register/captcha', {
