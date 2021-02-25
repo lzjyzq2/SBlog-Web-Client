@@ -5,16 +5,16 @@
 ##### This is an h5 tag
 ###### This is an h6 tag
 
-::: tip
-This is a tip
+::: tip Test
+*This is a tip*
 :::
 
 ::: warning
-This is a warning
+*This is a warning*
 :::
 
 ::: danger
-This is a dangerous warning
+*This is a dangerous warning*
 :::
 
 *This text will be italic*  
@@ -69,6 +69,12 @@ abc|bcd|cde
 abc|bcd|cde
 abc|bcd|cde
 
+| 水果        | 价格    |  数量  | 合计 |
+| --------   | -----:   | :----: |:----: |
+| 香蕉        | $1      |   555555555555555555555555555555555555555555555555555555   |55555555555555555555555555555555555555555555555555555555555555555 |
+| 苹果        | $1      |   6    | 6 |
+| 草莓        | $1      |   7    | 7 |
+
 `test`
 
 ## 链接
@@ -98,3 +104,8 @@ H~2~0
 
 ## 水平线
 ---
+
+## 删除线
+--????--
+## 下划线
+++hhhh++
