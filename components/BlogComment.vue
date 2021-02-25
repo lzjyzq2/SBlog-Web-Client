@@ -1,21 +1,42 @@
 <template>
-  <div class="comment-box">
-    <comment-panel />
-    <div>
-      <comment-item>
-        <comment-item v-for="n in 10" :key="n" />
-      </comment-item>
-      <comment-item v-for="n in 10" :key="n" />
-    </div>
+    <div class="comment-box">
+        <comment-panel @comment="comment"/>
+        <div>
+            <comment-item
+                v-for="(comment,index) in comments.comments"
+                :key="comment.commentId"
+                :showInput="comment.commentId==nowCommentKey"
+                @showComment="showCommentPanel(comment.commentId)"
+                :index="index"
 
-    <a-pagination
-      hideOnSinglePage
-      :defaultCurrent="commentPage"
-      :total="pageCount"
-      @change="onChange"
-      class="pagination"
-    />
-  </div>
+                :comment="comment"
+            >
+                <template v-slot:input>
+                    <comment-panel mode="reply" :parentCommentId="comment.commentId" :commentIndex="[index]"/>
+                </template>
+                <!-- <template v-slot:item>
+                    <comment-item
+                        v-for="n in 10"
+                        :key="n"
+                        :showInput="n==nowCommentKey"
+                        @showComment="showCommentPanel(n)"
+                    >
+                        <template v-slot:input>
+                            <comment-panel mode="reply" :parentCommentId="replay.commentId" :commentIndex="[index,n]"/>
+                        </template>
+                    </comment-item>
+                </template> -->
+            </comment-item>
+        </div>
+
+        <a-pagination
+            hideOnSinglePage
+            :defaultCurrent="commentPage"
+            :total="pageCount"
+            @change="onChange"
+            class="pagination"
+        />
+    </div>
 </template>
 
 <script>
@@ -23,19 +44,52 @@ import CommentItem from "~/components/common/CommentItem";
 import CommentPanel from "~/components/common/CommentPanel";
 
 export default {
-  data: function() {
+  data: function () {
     return {
-      commentPage: 1,
-      pageCount: 20
+      commentPage: 0,
+      pageCount: this.comments.commentCount,
+      nowCommentKey: -1,
     };
   },
   components: {
     CommentItem,
-    CommentPanel
+    CommentPanel,
+  },
+  props: {
+    comments: Object,
+    articleId: String,
   },
   methods: {
-    onChange: function(e) {}
-  }
+    onChange: function (e) {},
+    showCommentPanel: function (key) {
+      if (this.nowCommentKey == key) {
+        this.nowCommentKey = -1;
+      } else {
+        this.nowCommentKey = key;
+      }
+    },
+    comment: function (content, parentCommentId, mode,index) {
+      if (mode === "reply") {
+        this.$sblogclient
+          .comment(this.articleId, content,parentCommentId)
+          .then((res) => {
+            this.$emit("flushReply");
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      } else {
+        this.$sblogclient
+          .comment(this.articleId, content)
+          .then((res) => {
+            this.$emit("flushComments",this.articleId,this.commentPage);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+    },
+  },
 };
 </script>
 

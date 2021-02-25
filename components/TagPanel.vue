@@ -1,6 +1,9 @@
 <template>
   <div class="tag-panel">
-    <tag-item v-for="(tag,index) in tags" :key="tag.tag+index" :tag="tag.tag" :num="tag.num" :user-name="username"/>
+    <template v-if="tags!=null">
+      <tag-item  v-for="(tag,index) in tags" :key="tag.tag+index" :tag="tag.tag" :num="tag.num" :user-name="username"/>
+    </template>
+    
   </div>
 </template>
 

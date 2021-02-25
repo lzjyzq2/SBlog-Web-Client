@@ -1,32 +1,32 @@
 <template>
-  <div class="main-content">
-    <!-- UserHome -->
-    <div class="list-title">最后更新</div>
-    <div>
-      <article-list-item
-        class="item-line"
-        v-for="n in 5"
-        :key="n"
-        :url="articleList[0].url"
-        :title="articleList[0].title"
-        :content="articleList[0].content"
-        :date="articleList[0].date"
-        :tag="articleList[0].tag"
-      />
-    </div>
+    <div class="main-content">
+        <!-- UserHome -->
+        <div class="list-title">最后更新</div>
+        <div>
+            <article-list-item
+                class="item-line"
+                v-for="(item,index) in recentlyArticles"
+                :key="item.id+''+ index"
+                :url="/articles/+item.id"
+                :title="item.title"
+                :content="item.summary"
+                :date="item.publishTime"
+                :tag="item.tag"
+            />
+        </div>
 
-    <div class="list-title">文集</div>
-    <div>
-      <book-list-item
-        class="item-line"
-        v-for="n in 5"
-        :key="n"
-        :url="bookList[0].url"
-        :title="bookList[0].title"
-        :content="bookList[0].content"
-      />
+        <div class="list-title">文集</div>
+        <div>
+            <book-list-item
+                class="item-line"
+                v-for="(item,index) in books"
+                :key="item.id+''+ index"
+                :url="/books/+item.id"
+                :title="item.name"
+                :content="item.info?'没有简介':item.info"
+            />
+        </div>
     </div>
-  </div>
 </template>
 <script>
 import ArticleListItem from "~/components/common/ArticleListItem";
@@ -35,28 +35,43 @@ import BookListItem from "~/components/common/BookListItem";
  * 用户主页
  */
 export default {
+  async asyncData(context) {
+    let recentlyArticleRes = await context.app.$sblogclient.recentlyArticle(
+      context.params.userName
+    );
+    let publicBooksRes = await context.app.$sblogclient.publicBooks(
+      context.params.userName
+    );
+
+    return {
+      recentlyArticles: recentlyArticleRes.data.data,
+      books: publicBooksRes.data.data,
+    };
+
+    //  return await Promise.all([
+    //     context.app.$sblogclient.recentlyArticle(context.params.userName),
+    //     context.app.$sblogclient.publicBooks(context.params.userName)
+    //   ]).then(res => {
+    //     return {
+    //       recentlyArticles: res[0].data.data,
+    //       books: res[1].data.data
+    //     };
+    //   });
+  },
   data: function() {
     return {
-      articleList: [
-        {
-          url: "/articles/0",
-          title:
-            "Title，One Tilte,The title is very important，The title is very ...... ",
-          content:
-            "Text, the body is also very important, otherwise who knows what you want to do.Text, the body is also very important, otherwise who knows what you want to do......",
-          date: "2020-03-11",
-          tag: ["sblog", "text", "title"]
-        }
-      ],
-      bookList: [
-        {
-          url: "/books/0",
-          title:
-            "Title，One Tilte,The title is very important，The title is very ...... ",
-          content:
-            "Text, the body is also very important, otherwise who knows what you want to do.Text, the body is also very important, otherwise who knows what you want to do......"
-        }
-      ]
+      username: "",
+      userid: -1,
+      neckname: "",
+      autograph: null,
+      follow: 0,
+      articles: 0,
+      anthology: 0,
+      tags: 0,
+      canFollow: false,
+      allTag: null,
+      recentlyArticles: [],
+      books: []
     };
   },
   components: {

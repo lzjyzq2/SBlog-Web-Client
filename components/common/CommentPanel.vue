@@ -10,7 +10,7 @@
         />
         <div class="action">
             <a-button icon="smile" shape="circle" />
-            <a-button class="comment" type="primary">回复</a-button>
+            <a-button class="comment" type="primary" @click="submit">回复</a-button>
         </div>
       </div>
     </div>
@@ -23,6 +23,19 @@ export default {
     return {
       content: ""
     };
+  },
+  props:{
+    mode:{
+      type:String,
+      default:'comment' // comment | reply
+    },
+    parentCommentId:Number,
+    commentIndex:Array
+  },
+  methods:{
+    submit:function(){
+      this.$emit("comment",this.content,this.parentCommentId,this.mode,this.commentIndex)
+    } 
   }
 };
 </script>

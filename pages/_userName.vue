@@ -39,12 +39,34 @@
 import UserHomeNav from "~/components/UserHomeNav";
 import UserPanel from "~/components/UserPanel";
 import TagPanel from "~/components/TagPanel";
+import "~/assets/css/public.less";
 
 export default {
   layout:'blog',
   validate({ params }) {
     //TODO 用户校验
     return true;
+  },
+  async asyncData(context) {
+
+    let publicInfoRes = await context.app.$sblogclient.publicInfo(context.params.userName);
+    let tagsRes = await context.app.$sblogclient.publicTags(context.params.userName);
+
+    return {
+      publicInfo: publicInfoRes.data.data,
+      tags: tagsRes.data.data
+    }
+    // await Promise.all([
+    //     context.app.$sblogclient.publicInfo(context.params.userName),
+    //     context.app.$sblogclient.publicTags(context.params.userName)
+    //   ]).then(res=>{
+    //     console.log(res[0].data.data);
+    //     console.log(res[1].data.data);
+    //     return{
+    //       publicInfo: res[0].data.data,
+    //       tags: res[1].data.data
+    //     }
+    //   });
   },
   data: function() {
     return {
@@ -73,7 +95,8 @@ export default {
           tag:"Test",
           num:10
         }
-      ]
+      ],
+      publicInfo:{}
     };
   },
   components: {
@@ -83,31 +106,3 @@ export default {
   }
 };
 </script>
-<style lang="less" scoped>
-.container {
-  margin: 0 auto;
-  width: 100%;
-  .blog-menu-box {
-    border-bottom: 1px solid #e8e8e8;
-    box-shadow: 0 5px 5px 0 #e8e8e8;
-    .blog-menu-col {
-      max-width: 1200px;
-      margin: 0 auto;
-      .blog-menu {
-        border-bottom: none;
-        font-size: 16px;
-        height: 50px;
-        line-height: 50px;
-      }
-    }
-  }
-  .main{
-    display: flex;
-    justify-content: center;
-  }
-  .contentbox {
-    margin: 20px 0px;
-    max-width: 1200px;
-  }
-}
-</style>

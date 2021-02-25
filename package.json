@@ -11,27 +11,30 @@
     "generate": "nuxt generate"
   },
   "dependencies": {
-    "@nuxtjs/axios": "^5.9.5",
-    "@nuxtjs/markdownit": "^1.2.9",
-    "ant-design-vue": "^1.1.10",
-    "cross-env": "^5.2.0",
+    "@kangc/v-md-editor": "^1.4.6",
+    "@nuxtjs/axios": "^5.12.0",
+    "@nuxtjs/markdownit": "^1.2.10",
+    "ant-design-vue": "^1.6.4",
+    "cross-env": "^7.0.2",
     "express": "^4.16.4",
+    "markdown-it": "^11.0.0",
     "markdown-it-attrs": "^3.0.2",
     "markdown-it-container": "^2.0.0",
     "markdown-it-div": "^1.1.0",
     "markdown-it-emoji": "^1.4.0",
-    "markdown-it-highlightjs": "^3.1.0",
+    "markdown-it-highlightjs": "^3.2.0",
     "markdown-it-katex": "^2.0.3",
     "markdown-it-sub": "^1.0.0",
     "markdown-it-sup": "^1.0.0",
     "markdown-it-task-lists": "^2.1.1",
-    "nuxt": "^2.0.0",
+    "mavon-editor": "^2.9.0",
+    "nuxt": "^2.13.3",
     "nuxt-vuex-localstorage": "^1.2.6",
     "vue-i18n": "^8.15.4"
   },
   "devDependencies": {
     "less": "^3.11.1",
-    "less-loader": "^5.0.0",
+    "less-loader": "^6.2.0",
     "nodemon": "^2.0.2"
   }
 }

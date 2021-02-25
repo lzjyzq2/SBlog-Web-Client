@@ -191,8 +191,8 @@ export default {
           ).then((res) => {
             if (res.data.code == 10) {
                 this.$router.push({name:'login'})
+                this.$message.info("注册成功",2.5);
             }
-            return res;
         });
         }
       });

@@ -3,18 +3,21 @@
     <a-avatar icon="user" class="user-img" :size="48" />
     <div class="comment-info">
       <div class="user-info">
-        <p class="name">lzjyzq2</p>
-        <span class="time">2020.03.23 14:35</span>
+        <p class="name">{{comment.user.uname}}</p>
+        <span class="time">{{comment.time}}</span>
       </div>
-      <div>Nothing to reply to.Nothing to reply to.Nothing to reply to.Nothing to reply to.Nothing to reply to.Nothing to reply to.Nothing to reply to.Nothing to reply to.Nothing to reply to.Nothing to reply to.Nothing to reply to.Nothing to reply to.Nothing to reply to.Nothing to reply to.Nothing to reply to.Nothing to reply to.Nothing to reply to.Nothing to reply to.Nothing to reply to.Nothing to reply to.</div>
+      <div>{{comment.content}}</div>
       <div>
-        <a-icon type="like" />10
-        <a-button icon="message" type="link">回复</a-button>
+        <a-icon type="like" />{{comment.approve}}
+        <a-button icon="message" type="link" @click="$emit('showComment')">回复</a-button>
         <a-button icon="more" shape="circle" style="float:right" />
       </div>
       <div>
+        <slot name="input" v-if="showInput"/>
+      </div>
+      <div>
         <!-- 子评论 -->
-        <slot />
+        <slot name="item" />
       </div>
     </div>
   </div>
@@ -23,9 +26,17 @@
 <script>
 export default {
   data: function() {
-    return {};
+    return {
+      
+    };
   },
-  props: {}
+  props: {
+    showInput:{
+      type:Boolean,
+      default:false
+    },
+    comment:Object
+  }
 };
 </script>
 
