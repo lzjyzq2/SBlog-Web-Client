@@ -1,18 +1,17 @@
 export default function (context, inject) {
   let protocol = process.server ? context.req.protocol+":" : window.location.protocol; //协议
   let host = process.server ? context.req.host : window.location.host; //主机
-  let cookie = process.server ? context.req.headers.cookie : document.cookie;
+
   // Create a custom axios instance
   const sblogclient = context.$axios.create({
     baseURL: protocol + "//" + host,
   });
   sblogclient.interceptors.request.use(res => {
-    res.headers.common['Access-Token'] = getCookie("token") || undefined;
+    
+    res.headers.common['Access-Token'] = context.store.state.localStorage.userinfo.token || '';
     return res;
   });
 
-  // let loginPageUrl = '/' + context.store.state.locale + '/login';
-  // let indexPageUrl = '/' + context.store.state.locale + '/';
   let loginPageUrl = '/login';
   let indexPageUrl = '/';
 
@@ -153,24 +152,16 @@ export default function (context, inject) {
   sblogclient.getReplys=(commentId,page)=>{
     return sblogclient.get('/api/comment/artcile/'+commentId+'/replys/'+page);
   }
-  function getCookie(cname) {
-    let ca = cookie.split(';');
-    let name = cname + "=";
-    for (var i = 0; i < ca.length; i++) {
-      var c = ca[i].trim();
-      if (c.indexOf(name) == 0) return c.substring(name.length, c.length);
-    }
-    return "";
-  }
 
   // 添加响应拦截器
   sblogclient.interceptors.response.use(function (response) {
     // 对响应数据做点什么
     return response;
   }, function (error) {
-    if (error.response.status == 401) {
-      context.redirect(loginPageUrl);
-    }
+    console.log(error);
+    // if (error.response.status == 401) {
+    //   context.redirect(loginPageUrl);
+    // }
     return Promise.reject(error.response);
   })
   // Inject to context as $sblogclient

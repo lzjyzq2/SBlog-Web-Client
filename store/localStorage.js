@@ -6,3 +6,8 @@ export const mutations = {
         state.userinfo = userinfo
     }
 }
+export const getters = {
+    getUserInfo(state){
+        return state.userinfo;
+    }
+}
