@@ -1,41 +1,39 @@
 <template>
     <a-layout :hasSider="true">
         <a-layout-sider theme="light">
-            <a-button icon="plus-square" type="link" @click.native="showBookModal" block>新建文集</a-button>
+            <a-button icon="plus-square" type="link" @click="showBookModal" block>新建文集</a-button>
             <a-modal v-model="createBookVisible" title="新建文集" @ok="createBookOk">
                 <a-input placeholder="文集名称" v-model="createBookName" />
-
                 <a-input placeholder="文集描述" v-model="createBookInfo" />
             </a-modal>
             <a-menu
                 mode="inline"
                 :open-keys="openKeys"
                 @openChange="onOpenChange"
-                @select="menuitemselect"
-            >
-                <a-sub-menu v-for="(item,itemindex) in books" :key="'book'+item.id">
-                    <span slot="title">{{item.name}}</span>
-                    <a-sub-menu v-for="(row,rowindex) in item.subsections" :key="'sub'+row.id">
-                        <span slot="title">{{row.name}}</span>
+                @select="menuItemSelect" >
+                <a-sub-menu v-for="(book,bIndex) in books" :key="book.id+''" :index="bIndex">
+                    <span slot="title">{{book.name}}</span>
+                    <a-sub-menu v-for="(subsection,sIndex) in book.subsections" :key="book.id+':'+subsection.id" :index="sIndex">
+                        <span slot="title">{{subsection.name}}</span>
                         <a-menu-item
-                            :index="index"
-                            v-for="(article,index) in row.articles"
-                            :key="itemindex+'::'+rowindex+'::'+index+'::'+article.id"
+                            v-for="(article,aIndex) in subsection.articles"
+                            :index="bIndex+':'+sIndex+':'+aIndex"
+                            :key="book.id+':'+subsection.id+':'+article.id"
                         >{{selectArticle&&article.id==selectArticle.id?selectArticle.title:article.title}}</a-menu-item>
                         <a-button
                             icon="plus-circle"
                             type="link"
                             block
-                            @click.native="createArticle(item.id,row.id)"
+                            @click="createArticle(book.id,subsection.id)"
                         >新建文章</a-button>
                     </a-sub-menu>
                     <a-button
                         icon="plus-square"
                         type="link"
                         block
-                        @click.native="showRowModal(item.id)"
+                        @click="showRowModal(book.id)"
                     >新建分卷</a-button>
-                    <a-modal v-model="createSubVisible" title="新建文集" @ok="createRowOk">
+                    <a-modal v-model="createSubVisible" title="新建分卷" @ok="createRowOk">
                         <a-input placeholder="卷名称" v-model="createSubName" />
                     </a-modal>
                 </a-sub-menu>
@@ -48,24 +46,12 @@
                 <p class="title">正文</p>
 
                 <no-ssr>
-                    <!-- <mavon-editor
-                        ref="mdeditor"
-                        :toolbars="markdownOption"
-                        v-model="selectArticle.content"
-                    /> -->
-                    <v-md-editor ref="editor" v-model="selectArticle.content"></v-md-editor>
+                    <v-md-editor ref="editor" v-model="selectArticle.content" style="min-height:500px"></v-md-editor>
                 </no-ssr>
                 <p class="title">
                     自动摘要
                     <a-switch v-model="selectArticle.autoSummary" />
                 </p>
-                <!-- <div
-                    v-if="autoSummary"
-                    contenteditable="plaintext-only"
-                    ref="summary"
-                    class="summary"
-                    @keyup="onContentChange"
-                />-->
                 <a-textarea
                     v-if="!selectArticle.autoSummary"
                     placeholder="摘要"
@@ -141,11 +127,14 @@ export default {
     return context.app.$sblogclient
       .getBookList()
       .then(res => {
-        return {
-          books: res.data.data,
-          openKeys: ["book" + res.data.data[0].id],
-          latestOpenKey: "book" + res.data.data[0].id
-        };
+        if(res.data.data.length>0){
+          return {
+            books: res.data.data,
+            // openKeys: [''+res.data.data[0].id],
+            // latestOpenKey: ''+res.data.data[0].id
+          };
+        }
+        
       })
       .catch(error => {});
   },
@@ -181,43 +170,79 @@ export default {
         subfield: true, // 单双栏模式
         preview: true // 预览
       },
-      books: [
-        {
-          id: 0,
-          name: "Java学习日志",
-          info: "记录Java学习生活记录",
-          subsections: [
-            {
-              id: 0,
-              name: "卷一",
-              articles: [
-                {
-                  id: 0,
-                  title: "文章标题一"
-                },
-                {
-                  id: 1,
-                  title: "文章标题二"
-                }
-              ]
-            },
-            {
-              id: 1,
-              title: "卷二",
-              articles: [
-                {
-                  id: 2,
-                  title: "文章标题一"
-                },
-                {
-                  id: 3,
-                  title: "文章标题二"
-                }
-              ]
-            }
-          ]
-        }
-      ],
+      books: [],
+      // books: [
+      //   {
+      //     id: 0,
+      //     name: "Java学习日志",
+      //     info: "记录Java学习生活记录",
+      //     subsections: [
+      //       {
+      //         id: 0,
+      //         name: "卷一",
+      //         articles: [
+      //           {
+      //             id: 0,
+      //             title: "文章标题一"
+      //           },
+      //           {
+      //             id: 1,
+      //             title: "文章标题二"
+      //           }
+      //         ]
+      //       },
+      //       {
+      //         id: 1,
+      //         name: "卷一",
+      //         articles: [
+      //           {
+      //             id: 2,
+      //             title: "文章标题一"
+      //           },
+      //           {
+      //             id: 3,
+      //             title: "文章标题二"
+      //           }
+      //         ]
+      //       },
+      //       {
+      //         id: 2,
+      //         name: "卷一",
+      //         articles: [
+      //           {
+      //             id: 4,
+      //             title: "文章标题一"
+      //           },
+      //           {
+      //             id: 5,
+      //             title: "文章标题二"
+      //           }
+      //         ]
+      //       },
+      //     ],
+      //   },
+      //   {
+      //     id: 1,
+      //     name: "Java学习日志",
+      //     info: "记录Java学习生活记录",
+      //     subsections: [
+      //       {
+      //         id: 3,
+      //         name: "卷一",
+      //         articles: [
+      //           {
+      //             id: 6,
+      //             title: "文章标题一"
+      //           },
+      //           {
+      //             id: 7,
+      //             title: "文章标题二"
+      //           }
+      //         ]
+      //       },
+      //     ]
+      //   }
+      // ],
       input: "", //输入内容
       tags: [{ id: 1, name: "Test" }], //标签
       createBookVisible: false, //
@@ -225,21 +250,25 @@ export default {
       createBookInfo: "", //
       createSubVisible: false, //
       createSubName: "", //
+      isModitfy: false, //是否已修改
+      publishTime: moment(),
+
+
       openKeys: [], //
       latestOpenKey: "", //
       selectArticleKey: null, //
-      isModitfy: false, //是否已修改
       selectArticle: null,
-      publishTime: moment()
     };
   },
   mounted: function() {
-    this.requestSubData();
+    
   },
   methods: {
     onDateChange: function(e) {},
     onTimeChange: function(e) {},
     tagsChange: function(e) {},
+
+
     showBookModal: function() {
       this.createBookVisible = true;
     },
@@ -254,9 +283,10 @@ export default {
         })
         .catch(error => {});
     },
-    showRowModal: function(id) {
+
+    showRowModal: function(bid) {
       this.createSubVisible = true;
-      this.selectBookId = id;
+      this.selectBookId = bid;
     },
     createRowOk: function() {
       this.createSubVisible = false;
@@ -275,45 +305,53 @@ export default {
             }
         });
     },
-    onOpenChange(openKeys) {
-      const latestOpenKey = openKeys.find(
-        key => this.openKeys.indexOf(key) === -1
-      );
-      this.latestOpenKey = latestOpenKey;
-
-      if (this.books.find(book => "book" + book.id == latestOpenKey)) {
-        this.openKeys = latestOpenKey ? [latestOpenKey] : [];
-        if (latestOpenKey != "book" + this.books[this.getArticleArray()[0]].id)
-          this.requestSubData();
-      } else if (
-        this.books
-          .find(book => "book" + book.id == this.openKeys[0])
-          .subsections.find(sub => "sub" + sub.id == latestOpenKey)
-      ) {
-        this.openKeys = openKeys;
-        this.requestSubData();
-      } else {
-        this.openKeys = openKeys;
+    getLasetOpenKey:function(openKeys){
+      let latestOpenKey;
+      if(openKeys.length>=this.openKeys.length){
+        latestOpenKey = openKeys.find(key => this.openKeys.indexOf(key)===-1);
+      }else{
+        latestOpenKey = this.openKeys.find(key => openKeys.indexOf(key)===-1);
+      }
+      return latestOpenKey;
+    },
+    onOpenChange:function(openKeys) {
+      const latestOpenKey = this.getLasetOpenKey(openKeys);
+      const ids = this.getId(latestOpenKey);
+      if(ids.length==1){
+        if(this.openKeys.indexOf(latestOpenKey)===-1){
+          // 文集菜单被打开
+          this.openKeys = [latestOpenKey];
+          this.requestSubData(ids[0]);
+        }else{
+          // 文集菜单被关闭
+          this.openKeys = [];
+        }
+      }else if(ids.length==2){
+        if(this.openKeys.indexOf(latestOpenKey)===-1){
+          // 分卷菜单被打开
+          this.openKeys = [ids[0]+'',latestOpenKey]
+          this.requestArticleData(ids[0],ids[1]);
+        }else{
+          // 分卷菜单被关闭
+          this.openKeys = [ids[0]+'']
+        }
       }
     },
-    requestSubData: function() {
-      if (this.latestOpenKey.indexOf("book") !== -1) {
-        let id = this.latestOpenKey.substring(4, this.latestOpenKey.length);
-        this.$sblogclient.getSubList(id).then(res => {
+    requestSubData: function(bid) {
+        this.$sblogclient.getSubList(bid).then(res => {
           if (res.data.code == 0)
-            this.books.find(book => book.id == id).subsections = res.data.data;
+            this.books.find(book => book.id == bid).subsections = res.data.data;
         });
-      } else {
-        let id = this.latestOpenKey.substring(3, this.latestOpenKey.length);
-        this.$sblogclient.getArticleList(id).then(res => {
+    },
+    requestArticleData:function(bid,sid){
+      this.$sblogclient.getArticleList(sid).then(res => {
           if (res.data.code == 0)
             this.books
-              .find(book => "book" + book.id == this.openKeys[0])
+              .find(book => book.id == bid)
               .subsections.find(
-                sub => "sub" + sub.id == this.latestOpenKey
+                sub => sub.id == sid
               ).articles = res.data.data;
         });
-      }
     },
     createArticle: function(bookId, subId) {
       let book = {
@@ -336,24 +374,29 @@ export default {
           .articles.push(res.data.data);
       });
     },
-    menuitemselect: function({ item, key, selectedKeys }) {
-      let idarr = key.split("::");
-      let selectBook = this.books[idarr[0]].subsections[idarr[1]].articles[
-        idarr[2]
-      ];
-      this.$sblogclient.getArticleInfo(selectBook.id).then(res => {
+    menuItemSelect: function({ item, key, selectedKeys }) {
+      let ids = this.getId(key);
+
+
+      let selectBook = this.books.find(book=>book.id==ids[0]);
+      let selectSub = selectBook.subsections.find(subsection => subsection.id = ids[1]);
+      let selectArticle = selectSub.articles.find(article => article.id == ids[2]);
+
+      this.$sblogclient.getArticleInfo(selectArticle.id).then(res => {
         this.selectArticle = res.data.data;
         this.selectArticleKey = key;
       });
     },
-    getArticleArray: function() {
-      return this.selectArticleKey.split("::");
+    getIndex:function(index){
+      return index.split(":");
     },
-    getSelectedArticle: function() {
-      let indexArr = this.getArticleArray();
-      return this.books[indexArr[0]].subsections[indexArr[1]].articles[
-        indexArr[2]
-      ];
+    getId:function(key){
+      if(key!=null)
+        return key.split(":");
+    },
+    getArticleArray: function() {
+      if(this.selectArticleKey!=null)
+      return this.selectArticleKey.split(":");
     },
     publishBtn: function() {
       if (this.selectArticle) {
@@ -390,10 +433,10 @@ export default {
             this.$message.info("删除成功", 2.5);
             this.selectArticle = null;
             let idarr = this.getArticleArray();
-            this.books[idarr[0]].subsections[idarr[1]].articles.splice(
-              idarr[2],
-              1
-            );
+            let selectBook = this.books.find(book=>book.id==idarr[0]);
+            let selectSub = selectBook.subsections.find(subsection => subsection.id = idarr[1]);
+            let aIndex = selectSub.articles.findIndex(article => article.id == idarr[2]);
+            selectSub.articles.splice(aIndex,1);
             this.selectArticleKey = null;
           }
         });

@@ -1,32 +1,42 @@
 <template>
-    <div class="main-content">
-        <!-- UserHome -->
-        <div class="list-title">最后更新</div>
-        <div>
-            <article-list-item
-                class="item-line"
-                v-for="(item,index) in recentlyArticles"
-                :key="item.id+''+ index"
-                :url="/articles/+item.id"
-                :title="item.title"
-                :content="item.summary"
-                :date="item.publishTime"
-                :tag="item.tag"
-            />
-        </div>
-
-        <div class="list-title">文集</div>
-        <div>
-            <book-list-item
-                class="item-line"
-                v-for="(item,index) in books"
-                :key="item.id+''+ index"
-                :url="/books/+item.id"
-                :title="item.name"
-                :content="item.info?'没有简介':item.info"
-            />
-        </div>
+  <div class="main-content">
+    <!-- UserHome -->
+    <div class="list-title">最后更新</div>
+    <div>
+      <template v-if="recentlyArticles.length > 0">
+        <article-list-item
+          class="item-line"
+          v-for="(item, index) in recentlyArticles"
+          :key="item.id + '' + index"
+          :url="/articles/ + item.id"
+          :title="item.title"
+          :content="item.summary"
+          :date="item.publishTime"
+          :tag="item.tag"
+        />
+      </template>
+      <template v-else>
+        <a-empty class="empty"><span slot="description">一篇文章都还没有发布哦~</span></a-empty>
+      </template>
     </div>
+
+    <div class="list-title">文集</div>
+    <div>
+      <template v-if="books.length > 0">
+        <book-list-item
+          class="item-line"
+          v-for="(item, index) in books"
+          :key="item.id + '' + index"
+          :url="/books/ + item.id"
+          :title="item.name"
+          :content="item.info ? '没有简介' : item.info"
+        />
+      </template>
+      <template v-else>
+        <a-empty class="empty"><span slot="description">一本文集都还没有发布哦~</span></a-empty>
+      </template>
+    </div>
+  </div>
 </template>
 <script>
 import ArticleListItem from "~/components/common/ArticleListItem";
@@ -42,23 +52,12 @@ export default {
     let publicBooksRes = await context.app.$sblogclient.publicBooks(
       context.params.userName
     );
-
     return {
-      recentlyArticles: recentlyArticleRes.data.data,
-      books: publicBooksRes.data.data,
+      recentlyArticles: recentlyArticleRes?recentlyArticleRes.data.data:[],
+      books: publicBooksRes?publicBooksRes.data.data:[],
     };
-
-    //  return await Promise.all([
-    //     context.app.$sblogclient.recentlyArticle(context.params.userName),
-    //     context.app.$sblogclient.publicBooks(context.params.userName)
-    //   ]).then(res => {
-    //     return {
-    //       recentlyArticles: res[0].data.data,
-    //       books: res[1].data.data
-    //     };
-    //   });
   },
-  data: function() {
+  data: function () {
     return {
       username: "",
       userid: -1,
@@ -71,13 +70,13 @@ export default {
       canFollow: false,
       allTag: null,
       recentlyArticles: [],
-      books: []
+      books: [],
     };
   },
   components: {
     ArticleListItem,
-    BookListItem
-  }
+    BookListItem,
+  },
 };
 </script>
 <style lang="less" scoped>
@@ -104,6 +103,13 @@ export default {
     &:last-child {
       border-bottom: none;
     }
+  }
+  .empty{
+    min-height: 300px;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
   }
 }
 </style>
